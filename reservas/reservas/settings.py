@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'reservas.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'reservas',
+        'HOST': 'localhost',
+        'USER': 'postgres',
+        'PASSWORD' : 'scrappy',
+        'PORT': 5432
     }
 }
 
