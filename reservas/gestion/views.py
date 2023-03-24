@@ -15,4 +15,9 @@ class PruebaView(APIView):
         ]
 
         return Response(data = data)
+    
+    def post(self, request):
+        return Response(data = {
+            'message': 'Se recibio la prueba'
+        })
         
