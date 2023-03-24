@@ -68,7 +68,7 @@ class UnaCategoriaView(APIView):
         if not categoria:
             return Response(data= {
                 'content': 'Categoria no existe'
-            })
+            }, status=404)
 
         data_serializada = CategoriaSerializer(instance = categoria)
 
@@ -82,7 +82,7 @@ class UnaCategoriaView(APIView):
         if not categoria:
             return Response(data= {
                 'content': 'Categoria no existe'
-            })
+            }, status=404)
 
         data = request.data
         data_serializada = CategoriaSerializer(data = data)
@@ -106,7 +106,7 @@ class UnaCategoriaView(APIView):
         if not categoria:
             return Response(data= {
                 'content': 'Categoria no existe'
-            })
+            }, status=404)
 
         resultado = Categoria.objects.filter(id = id).delete()
         print(resultado)
