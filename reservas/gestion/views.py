@@ -52,4 +52,20 @@ class CategoriaView(APIView):
                 'message': 'Error al crear la categoria',
                 'content': data_serializada.errors
             })
-        
+    
+    def get(self, request:Request):
+        categorias = Categoria.objects.all()
+        data_serializada = CategoriaSerializer(instance = categorias, many= True)
+
+        return Response(data = {
+                'content': data_serializada.data
+            })
+    
+class UnaCategoriaView(APIView):
+    def get(self, request:Request, id):
+        categoria = Categoria.objects.filter(id = id).first()
+        data_serializada = CategoriaSerializer(instance = categoria)
+
+        return Response(data ={
+            'content': data_serializada.data
+        })
