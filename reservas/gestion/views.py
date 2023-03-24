@@ -100,3 +100,16 @@ class UnaCategoriaView(APIView):
                 'content': data_serializada.errors
             })
     
+    def delete(self, request: Request, id):
+        categoria = Categoria.objects.filter(id = id).first()
+
+        if not categoria:
+            return Response(data= {
+                'content': 'Categoria no existe'
+            })
+
+        resultado = Categoria.objects.filter(id = id).delete()
+        print(resultado)
+        return Response(data ={
+            'content': "Categoria eliminada"
+        })
