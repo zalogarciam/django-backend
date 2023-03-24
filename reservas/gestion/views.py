@@ -1,3 +1,18 @@
 from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+class PruebaView(APIView):
+    def get(self, request):
+        data = [
+            {
+            'nombre': 'diversion',
+            'id': 1
+            },
+            {
+            'nombre': 'entretenimiento',
+            'id': 2
+            }
+        ]
 
-# Create your views here.
+        return Response(data = data)
+        
