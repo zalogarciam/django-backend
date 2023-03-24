@@ -64,8 +64,39 @@ class CategoriaView(APIView):
 class UnaCategoriaView(APIView):
     def get(self, request:Request, id):
         categoria = Categoria.objects.filter(id = id).first()
+
+        if not categoria:
+            return Response(data= {
+                'content': 'Categoria no existe'
+            })
+
         data_serializada = CategoriaSerializer(instance = categoria)
 
         return Response(data ={
             'content': data_serializada.data
         })
+    
+    def put(self, request:Request, id):
+        categoria = Categoria.objects.filter(id = id).first()
+
+        if not categoria:
+            return Response(data= {
+                'content': 'Categoria no existe'
+            })
+
+        data = request.data
+        data_serializada = CategoriaSerializer(data = data)
+
+        if data_serializada.is_valid():
+            categoria.nombre = data_serializada.validated_data.get('nombre')
+            categoria.habilitado = data_serializada.validated_data.get('habilitado')
+            categoria.save()
+            return Response(data ={
+                'content': "Categoria actualizada"
+            })
+        else:
+            return Response(data ={
+                'message': "Categoria no actualizada",
+                'content': data_serializada.errors
+            })
+    
