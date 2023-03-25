@@ -15,6 +15,12 @@ class ProductoSerializer(serializers.ModelSerializer):
         model = Producto
         fields = '__all__'
 
+class ProductoConCategoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Producto
+        fields = '__all__'
+        depth = 1
+
 def paginationSerializer(totalItems, page, perPage):
     itemsPerPage = perPage if totalItems >= perPage else totalItems
     totalPages = ceil(totalItems/ itemsPerPage)  if itemsPerPage > 0 else None

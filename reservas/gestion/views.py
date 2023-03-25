@@ -158,3 +158,18 @@ class ProductosView(APIView):
 class ProductosGenericView(ListAPIView):
     serializer_class = ProductoSerializer
     queryset = Producto.objects.all()
+
+class UnProductoView(APIView):
+    def get(self, request: Request, id):
+        prod = Producto.objects.filter(id = id).first()
+
+        if not prod:
+            return Response(data= {
+                'content': 'Producto no existe'
+            }, status=404)
+
+        data_serializada = CategoriaSerializer(instance = prod)
+
+        return Response(data = {
+            'content': data_serializada.data
+        })
