@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-from .serializers import CategoriaSerializer, PruebaSerializer
+from .serializers import CategoriaSerializer, ProductoSerializer, PruebaSerializer
 from .models import Categoria
 class PruebaView(APIView):
     def get(self, request):
@@ -113,3 +113,22 @@ class UnaCategoriaView(APIView):
         return Response(data ={
             'content': "Categoria eliminada"
         })
+    
+class ProductosView(APIView):
+    def post(self, request:Request):
+        data = request.data
+
+    
+        data_serializada = ProductoSerializer(data = data)
+        print(data_serializada)
+        if data_serializada.is_valid():
+            data_serializada.save()
+
+            return Response(data = {
+                'message': 'Producto creado'
+            })
+        else:
+            return Response(data = {
+                'message': 'Error al crear Producto',
+                'content': data_serializada.errors
+            })
