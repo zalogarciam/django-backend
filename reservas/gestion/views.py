@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
 from rest_framework import status
-from .serializers import CategoriaSerializer, ProductoSerializer, PruebaSerializer, paginationSerializer
+from .serializers import CategoriaSerializer, ProductoConCategoriaSerializer, ProductoSerializer, PruebaSerializer, paginationSerializer
 from .models import Categoria, Producto
 class PruebaView(APIView):
     def get(self, request):
@@ -169,7 +169,7 @@ class UnProductoView(APIView):
             }, status=404)
 
         data_serializada = CategoriaSerializer(instance = prod)
-
+        resultado = ProductoConCategoriaSerializer(instance = prod)
         return Response(data = {
-            'content': data_serializada.data
+            'content': resultado.data
         })
