@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import CategoriaView, ProductosView, PruebaView, UnaCategoriaView
+from .views import CategoriaView, ProductosGenericView, ProductosView, PruebaView, UnaCategoriaView
 
 urlpatterns = [
     path('prueba/', PruebaView.as_view()),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('categoria/', CategoriaView.as_view()),
     path('categoria/<int:id>', UnaCategoriaView.as_view()),
     path('productos/', ProductosView.as_view()),
+    path('productos-generic/', ProductosGenericView.as_view()),
 ]
