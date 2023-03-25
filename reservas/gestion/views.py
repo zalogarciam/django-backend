@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
-
-from .serializers import CategoriaSerializer, ProductoSerializer, PruebaSerializer
-from .models import Categoria
+from rest_framework import status
+from .serializers import CategoriaSerializer, ProductoSerializer, PruebaSerializer, paginationSerializer
+from .models import Categoria, Producto
 class PruebaView(APIView):
     def get(self, request):
         data = [
@@ -122,13 +122,34 @@ class ProductosView(APIView):
         data_serializada = ProductoSerializer(data = data)
         print(data_serializada)
         if data_serializada.is_valid():
-            data_serializada.save()
-
+            prod = data_serializada.save()
+            result = ProductoSerializer(instance = prod)
             return Response(data = {
-                'message': 'Producto creado'
-            })
+                'message': 'Producto creado',
+                'content': result.data
+            }, status=status.HTTP_201_CREATED)
         else:
             return Response(data = {
                 'message': 'Error al crear Producto',
                 'content': data_serializada.errors
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get(self, request:Request):
+        print(request.query_params)
+        page = int(request.query_params.get('page'))
+        perPage = int(request.query_params.get('perPage', 10))
+        skip = (page - 1) * perPage
+        take = perPage * page
+        
+        print(skip, take)
+
+        total_productos = Producto.objects.count()
+        productos = Producto.objects.all()[skip:take]
+
+        pagination_info = paginationSerializer(total_productos, page, perPage)
+        data_serializada = ProductoSerializer(instance=productos, many=True)
+        return Response(data = {
+            'content': data_serializada.data,
+            'page_info': pagination_info
+
+        }, status=status.HTTP_200_OK)
